@@ -1,8 +1,9 @@
 import './App.css';
 import React, { useState } from 'react';
-import { Header, Tasks } from './components'
+import { Header, Tasks, AddTask } from './components'
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -24,6 +25,12 @@ function App() {
     },
   ])
 
+  const addTask = (task) => {
+    const id = Math.floor(Math.random() * 10000) + 1;
+    const newTask = {id, ...task}
+    setTasks([...tasks, newTask]);
+  }
+
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id))
   }
@@ -37,7 +44,8 @@ function App() {
   return (
     <>
       <div className="container">
-        <Header />
+        <Header showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
+        {showAddTask && <AddTask onAdd={addTask} />}
         {tasks.length !== 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onDoubleClick={toggleReminder} /> : <p>There are currently no tasks, try adding a task!</p>}
       </div>
     </>
