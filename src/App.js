@@ -1,24 +1,25 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Header, Tasks, AddTask } from './components'
+import { Header, Tasks, AddTask, Footer, About, TaskDetails } from './components'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([])
 
   const fetchTasks = async () => {
-      const res = await fetch('http://localhost:3001/tasks')
-      const data = await res.json()
+    const res = await fetch('http://localhost:3001/tasks')
+    const data = await res.json()
 
-      return data
-    }
+    return data
+  }
 
-    const fetchTask = async (id) => {
-      const res = await fetch(`http://localhost:3001/tasks/${id}`)
-      const data = await res.json()
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:3001/tasks/${id}`)
+    const data = await res.json()
 
-      return data
-    }
+    return data
+  }
 
   useEffect(() => {
     const getTasks = async () => {
@@ -43,7 +44,7 @@ function App() {
     setTasks([...tasks, data])
 
     const id = Math.floor(Math.random() * 10000) + 1;
-    const newTask = {id, ...task}
+    const newTask = { id, ...task }
     setTasks([...tasks, newTask]);
   }
 
@@ -57,7 +58,7 @@ function App() {
 
   const toggleReminder = async (id) => {
     const taskToToggle = await fetchTask(id);
-    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder}
+    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
 
     const res = await fetch(`http://localhost:3001/tasks/${id}`, {
       method: 'PUT',
@@ -69,19 +70,35 @@ function App() {
 
     const data = await res.json()
 
-    setTasks(tasks.map(task => 
-      task.id === id ? {...task, reminder: data.reminder} : task
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, reminder: data.reminder } : task
     ));
   }
 
   return (
-    <>
+    <Router>
       <div className="container">
         <Header showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
-        {showAddTask && <AddTask onAdd={addTask} />}
-        {tasks.length !== 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onDoubleClick={toggleReminder} /> : <p>There are currently no tasks, try adding a task!</p>}
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {showAddTask && <AddTask onAdd={addTask} />}
+
+                {tasks.length !== 0 ? <Tasks
+                  tasks={tasks}
+                  onDelete={deleteTask}
+                  onDoubleClick={toggleReminder} /> :
+                  <p>There are currently no tasks, try adding a task!</p>}
+                <Footer />
+              </>}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
+        </Routes>
       </div>
-    </>
+    </Router >
   );
 }
 
