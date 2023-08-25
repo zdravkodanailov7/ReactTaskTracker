@@ -78,25 +78,33 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Header showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <>
-                {showAddTask && <AddTask onAdd={addTask} />}
+        <aside id='left-aside'>
+          Left Aside
+        </aside>
+        <main id='main'>
+          <Header showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <>
+                  {showAddTask && <AddTask onAdd={addTask} />}
 
-                {tasks.length !== 0 ? <Tasks
-                  tasks={tasks}
-                  onDelete={deleteTask}
-                  onDoubleClick={toggleReminder} /> :
-                  <p>There are currently no tasks, try adding a task!</p>}
-                <Footer />
-              </>}
-          />
-          <Route path="/about" element={<About />} />
-          <Route path="/task/:id" element={<TaskDetails />} />
-        </Routes>
+                  {tasks.length !== 0 ? <Tasks
+                    tasks={tasks}
+                    onDelete={deleteTask}
+                    onDoubleClick={toggleReminder} /> :
+                    <p>There are currently no tasks, try adding a task!</p>}
+                  <Footer />
+                </>}
+            />
+            <Route path="/about" element={<About />} />
+            <Route path="/task/:id" element={<TaskDetails />} />
+          </Routes> 
+        </main>
+        <aside id='right-aside'>
+          Right Aside
+        </aside>
       </div>
     </Router >
   );
