@@ -32,9 +32,11 @@ body {
 
 #main {
   background: #262948;
+  box-sizing: border-box;
   width: 50%;
   height: 100vh;
   font-family: "Poppins";
+  padding: 1rem;
 }
 
 #right-aside {

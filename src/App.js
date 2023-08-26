@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Header, Tasks, AddTask, Footer, About, TaskDetails } from './components'
+import { Header, Tasks, AddTask, Footer, About, TaskDetails, Upgrade } from './components'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -83,6 +83,7 @@ function App() {
         </aside>
         <main id='main'>
           <Header showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
+          <Upgrade />
           <Routes>
             <Route
               path='/'
